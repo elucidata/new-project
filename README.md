@@ -6,11 +6,11 @@ CoffeeScript, Stylus, and Eco templates.
 
 To create new app using this skeleton:
 
-  brunch new gh:elucidata/new-project MyNewApp
+    brunch new gh:elucidata/new-project MyNewApp
 
 ## Todo
 
 Once your project is created, you'll want to:
 
 - Update the application name in `package.json` and `bower.json`
-- Replace the ReadMe!
+- Replace this `ReadMe.md` file
