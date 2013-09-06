@@ -25,8 +25,8 @@
       "dependencies": {
         "backbone": "*"
       },
-      "main": [ 
-        "dist/backbone.giraffe.js", 
+      "main": [
+        "dist/backbone.giraffe.js",
         "dist/backbone.giraffe.contrib.js"
       ]
     }

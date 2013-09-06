@@ -16,6 +16,8 @@
     "css-brunch": ">= 1.0 < 1.8",
     "stylus-brunch": ">= 1.0 < 1.8",
     "clean-css-brunch": ">= 1.0 < 1.8",
-    "auto-reload-brunch": "~1.6.5"
+    "auto-reload-brunch": "~1.6.5",
+    "shelljs": "~0.1.4",
+    "semver": "~2.0.9"
   }
 }

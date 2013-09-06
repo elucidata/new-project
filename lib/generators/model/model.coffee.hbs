@@ -1,0 +1,15 @@
+Model = require 'framework/model'
+Collection = require 'framework/collection'
+
+
+class {{#camelize}}{{name}}{{/camelize}} extends Model
+
+
+class {{#camelize}}{{pluralName}}{{/camelize}} extends Collection
+  model: {{#camelize}}{{name}}{{/camelize}}
+
+
+module.exports= {
+  {{#camelize}}{{name}}{{/camelize}}  
+  {{#camelize}}{{pluralName}}{{/camelize}}
+} 

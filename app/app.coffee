@@ -1,10 +1,12 @@
 App= require 'framework/app'
 UIController= require 'controllers/main'
+VERSION= require 'models/version'
 
 class Application extends App
   
+  # TODO: Update app.title!
   title: 'Untitled'
-  version: '0.1.0'
+  version: VERSION
 
   routes:
     '': 'show:home'
