@@ -1,7 +1,7 @@
 
 module.exports= class Model extends Giraffe.Model
 
-  # Public: Generates attribute methods or properties accessors.
+  # Public: Generates attribute methods or property accessors.
   # 
   # name    - The String name of the Model attribute to wrap.
   # options - The hash Object of options... (default: {})

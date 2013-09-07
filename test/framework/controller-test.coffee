@@ -20,13 +20,17 @@ app= new App()
 
 describe 'Framework.Controller', ->
   beforeEach ->
-    @controller = new TestController paramName:'NAME'
+    @controller = new TestController 
+      paramName: 'NAME'
+      getEventCount: -> @eventCount
+
   afterEach ->
     @controller.dispose()
 
   it 'should assign options to object', ->
     expect(@controller.paramName).to.exist
     expect(@controller.paramName).to.equal 'NAME'
+    expect(@controller.getEventCount).to.exist
 
   it 'should reference the current App', ->
     expect(@controller.app).to.exist
@@ -51,3 +55,27 @@ describe 'Framework.Controller', ->
     expect(@controller.dataChange).to.equal no
     @controller.mdl.set name:'finished'
     expect(@controller.dataChange).to.equal yes
+
+  it 'should support disposing nested controllers', ->
+    c1= new TestController
+    c2= new TestController
+    ### By default controllers are children of the app ###
+    expect(c1.parent).to.equal app
+    @controller.addChildren [c1, c2]
+    expect(c1.parent).to.equal @controller
+    expect(c2.parent).to.equal @controller
+    @controller.dispose()
+    expect(c1.parent).to.equal null
+    expect(c2.parent).to.equal null
+
+  it 'should support invoking methods in controller chain', ->
+    c1= new TestController
+    c2= new TestController
+    expect(c1.getEventCount).to.be.undefined
+    expect(c2.getEventCount).to.be.undefined
+    expect(@controller.getEventCount).to.exist
+    c1.addChild c2
+    @controller.addChild c1
+    expect(c1.parent).to.equal @controller
+    expect(c2.parent).to.equal c1
+    expect(c2.invoke('getEventCount')).to.equal @controller.getEventCount()

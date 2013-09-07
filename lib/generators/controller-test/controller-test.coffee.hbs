@@ -1,5 +1,8 @@
 {{#camelize}}{{name}}{{/camelize}} = require 'controllers/{{name}}'
 
-describe '{{#camelize}}{{name}}{{/camelize}}', ->
+describe '{{#camelize}}{{name}}{{/camelize}} Controller', ->
   beforeEach ->
     @controller = new {{#camelize}}{{name}}{{/camelize}}()
+
+  it 'should exist', ->
+    expect(@controller).to.exist

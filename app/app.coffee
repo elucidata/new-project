@@ -9,7 +9,8 @@ class Application extends App
   version: VERSION
 
   routes:
-    '': 'show:home'
+    # Your routes go here, above the 'home' route
+    '*pathInfo': 'show:home'
   
   afterRender: ->
     @uiController= new UIController

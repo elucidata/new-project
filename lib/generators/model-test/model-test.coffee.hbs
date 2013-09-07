@@ -1,7 +1,7 @@
 {{#camelize}}{{name}}{{/camelize}} = require('models/{{name}}').{{#camelize}}{{name}}{{/camelize}}
 {{#camelize}}{{pluralName}}{{/camelize}} = require('models/{{name}}').{{#camelize}}{{pluralName}}{{/camelize}}
 
-describe '{{#camelize}}{{name}}{{/camelize}}', ->
+describe '{{#camelize}}{{name}}{{/camelize}} Model', ->
   beforeEach ->
     @model = new {{#camelize}}{{name}}{{/camelize}}()
     @collection = new {{#camelize}}{{pluralName}}{{/camelize}}()
@@ -9,3 +9,8 @@ describe '{{#camelize}}{{name}}{{/camelize}}', ->
   afterEach ->
     @model.dispose()
     @collection.dispose()
+
+  it 'should exist', ->
+    expect(@model).to.exist
+    expect(@collection).to.exist
+
