@@ -10,6 +10,7 @@ app.once 'app:initialized', ->
   app.attachTo 'body', method:'html'
   unless Backbone.history.start()
     app.trigger('show:home')
+    app.trigger('route:no-match', (location.hash or "#").substring(1))
   console.log "Ready."
 
 

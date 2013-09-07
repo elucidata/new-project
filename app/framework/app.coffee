@@ -4,8 +4,8 @@ patchBackbone= ->
 
   Backbone.history.loadUrl= (fo)->
     matched= origLoadUrl.call(Backbone.history, fo)
-    unless matched
-      Giraffe.app.trigger('route:no-match', fo)
+    # Only trigger no-match events when testing an actual fragment
+    Giraffe.app.trigger('route:no-match', fo) if fo? and not matched
     matched
 
 # Internal class
