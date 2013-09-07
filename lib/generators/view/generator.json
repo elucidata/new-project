@@ -6,8 +6,8 @@
     }
   ],
   "dependencies": [
-    {"name": "template", "params": "{{name}}"},
-    {"name": "style", "params": "{{name}}"},
-    {"name": "view-test", "params": "{{name}}"}
+    {"type": "template", "params": "{{name}}"},
+    {"type": "style", "params": "{{name}}"},
+    {"type": "view-test", "params": "{{name}}"}
   ]
 }

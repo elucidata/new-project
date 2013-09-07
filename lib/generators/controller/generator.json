@@ -1,4 +1,5 @@
 {
+  "description": "Simple controller class",
   "files": [
     {
       "from": "controller.coffee.hbs",
@@ -6,6 +7,6 @@
     }
   ],
   "dependencies": [
-    {"name": "controller-test", "params": "{{name}}"}
+    {"type": "controller-test", "params": "{{name}}"}
   ]
 }

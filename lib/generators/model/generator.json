@@ -6,6 +6,6 @@
     }
   ],
   "dependencies": [
-    {"name": "model-test", "params": "{{name}}"}
+    {"type": "model-test", "params": "{{name}}"}
   ]
 }

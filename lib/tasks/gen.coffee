@@ -19,6 +19,6 @@ task 'gen', "Runs scaffold generator", (options)->
 
 
 task 'gen:ls', "List known generators", (options)->
-  cmd= "scaffolt list -g #{PATH.GEN}"
+  cmd= "scaffolt -g #{PATH.GEN} --list"
   # exec_loud(cmd)
   exec(cmd)
