@@ -2,7 +2,7 @@
   "files": [
     {
       "from": "controller-test.coffee.hbs",
-      "to": "test/controllers/{{name}}-controller-test.coffee"
+      "to": "test/controllers/{{name}}-test.coffee"
     }
   ],
   "dependencies": []
