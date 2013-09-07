@@ -8,7 +8,8 @@ app.addInitializer (opts)->
 
 app.once 'app:initialized', ->
   app.attachTo 'body', method:'html'
-  Backbone.history.start()
+  unless Backbone.history.start()
+    app.trigger('show:home')
   console.log "Ready."
 
 

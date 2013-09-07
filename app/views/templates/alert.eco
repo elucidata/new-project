@@ -1,0 +1,5 @@
+<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Oops!</strong>
+  It looks like you were looking for something at <code>#<%= @path %></code>, but that isn't a recognized URL.
+</div>

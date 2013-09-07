@@ -7,6 +7,10 @@
     </h1>
   </div>
 
-  <div id="outlet"></div>
+  <div id="message"></div>
+
+  <div id="outlet">
+    <!-- Content views go here... -->
+  </div>
 
 </div>

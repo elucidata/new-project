@@ -10,10 +10,8 @@ module.exports= class UIController extends Controller
   initialize: ->
     @layout= new LayoutView
 
-  showHomeView: (pathInfo)->
-    console.log "Showing HOME", pathInfo
-    hasPathInfo= pathInfo?
-    @_updateLayout new HomeView {hasPathInfo, pathInfo}
+  showHomeView: ->
+    @_updateLayout new HomeView
 
   _updateLayout: (view, checkType=no)->
     return if @currentView is view

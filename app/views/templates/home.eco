@@ -1,12 +1,5 @@
 <div class="row">
   <div class="col-sm-12">
-  <% if @hasPathInfo: %>
-    <div class="alert alert-warning">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <strong>Oops!</strong>
-      It looks like you were looking for something at <code>#<%= @pathInfo %></code>, but that isn't a recognized URL.
-    </div>
-  <% end %>
     <h3>Your New Project</h3>
     <p>If you can read this, and there are no errors in your console, then everything seems to be working!</p>
   </div>

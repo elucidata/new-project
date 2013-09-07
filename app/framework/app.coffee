@@ -1,4 +1,13 @@
 
+patchBackbone= ->
+  origLoadUrl= Backbone.history.loadUrl
+
+  Backbone.history.loadUrl= (fo)->
+    matched= origLoadUrl.call(Backbone.history, fo)
+    unless matched
+      Giraffe.app.trigger('route:no-match', fo)
+    matched
+
 # Internal class
 class Navigator
   constructor: (@app)->
@@ -10,7 +19,11 @@ module.exports= class App extends Giraffe.App
 
   initialize:->
     @navigator= new Navigator this
+    patchBackbone()
     super()
   
   navigateTo: (params...)-> 
     @navigator.go params...
+
+  logEvents: ->
+    @on 'all', (args...)-> console.log 'app.event', args
