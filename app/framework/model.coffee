@@ -14,8 +14,8 @@ module.exports= class Model extends Giraffe.Model
   @trackTimestamps= ->
     @attr 'createdOn', readonly:yes
     @attr 'updatedOn', readonly:yes
-    modelClass::_didChange= _didChange
-    modelClass::_didAdd= _didAdd
+    @::_didChange= _didChange
+    @::_didAdd= _didAdd
 
   # Public: Generates attribute methods or property accessors.
   # 
