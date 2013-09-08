@@ -40,3 +40,11 @@ module.exports= class View extends Giraffe.View
     this_rect.top <= parent_rect.bottom and this_rect.bottom >= parent_rect.top
 
   isHidden: -> !@isVisible()
+
+  helpers:
+    shortDate: (date)->
+      @formatDate date, 'l'
+    longDate: (date)->
+      @formatDate date, 'LL'
+    formatDate: (date, format='LL')->
+      moment(date).format(format)

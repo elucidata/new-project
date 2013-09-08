@@ -1,6 +1,22 @@
 
 module.exports= class Model extends Giraffe.Model
 
+  initialize: ->
+    # Timestamp tracking
+    if @createdOn? and @updatedOn?
+      @on 'add', model._didAdd
+      @on 'change', model._didChange
+    super
+
+  touch: ->
+    @_didChange()
+
+  @trackTimestamps= ->
+    @attr 'createdOn', readonly:yes
+    @attr 'updatedOn', readonly:yes
+    modelClass::_didChange= _didChange
+    modelClass::_didAdd= _didAdd
+
   # Public: Generates attribute methods or property accessors.
   # 
   # name    - The String name of the Model attribute to wrap.
@@ -27,4 +43,17 @@ module.exports= class Model extends Giraffe.Model
         () -> @get name
       else
         (val) -> if val? then @set(name, val) else @get(name)
-  
+
+
+
+_now= ->
+  (new Date).getTime()
+
+_didChange= ->
+  @set 'updatedOn', _now(), silent:yes
+
+_didAdd= ->
+  unless @attributes.createdOn?
+    @set 'createdOn', _now(), silent:yes
+    @_didChange()
+  this
