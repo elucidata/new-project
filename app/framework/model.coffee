@@ -4,8 +4,8 @@ module.exports= class Model extends Giraffe.Model
   initialize: ->
     # Timestamp tracking
     if @createdOn? and @updatedOn?
-      @on 'add', model._didAdd
-      @on 'change', model._didChange
+      @on 'add', @_didAdd
+      @on 'change', @_didChange
     super
 
   touch: ->
