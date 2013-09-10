@@ -2,6 +2,10 @@ Giraffe.View.setTemplateStrategy 'jst'
 
 module.exports= class View extends Giraffe.View
 
+  constructor: ->
+    @template= require("views/templates/#{ @template }") if _.isString @template
+    super
+
   # Public: Adds a class that MUST contain a CSS transtion and will automatically 
   #         remove it on transitionEnd event.
   # 

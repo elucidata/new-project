@@ -3,7 +3,7 @@ alertTemplate= require './templates/alert'
 
 module.exports= class AppLayoutView extends View
 
-  template: 'app-layout'  
+  template: 'app-layout'
 
   ui:
     outlet: '#outlet'
