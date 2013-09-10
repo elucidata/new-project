@@ -1,5 +1,5 @@
-View = require 'framework/view' # or 'framework/collection-view'
-template = require 'views/templates/{{name}}'
+View= require 'framework/view' # or 'framework/collection-view'
 
-module.exports = class {{#camelize}}{{name}}{{/camelize}}View extends View
-  template: template
+module.exports= class {{#camelize}}{{name}}{{/camelize}}View extends View
+  className: '{{name}}-view'
+  template: '{{name}}'

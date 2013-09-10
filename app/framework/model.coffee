@@ -1,12 +1,12 @@
 
 module.exports= class Model extends Giraffe.Model
 
-  initialize: ->
+  constructor: ->
+    super
     # Timestamp tracking
     if @createdOn? and @updatedOn?
       @on 'add', @_didAdd
       @on 'change', @_didChange
-    super
 
   touch: ->
     @_didChange()
@@ -45,6 +45,7 @@ module.exports= class Model extends Giraffe.Model
         (val) -> if val? then @set(name, val) else @get(name)
 
 
+# Helpers
 
 _now= ->
   (new Date).getTime()

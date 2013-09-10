@@ -1,10 +1,9 @@
-{{#camelize}}{{name}}{{/camelize}} = require('models/{{name}}').{{#camelize}}{{name}}{{/camelize}}
-{{#camelize}}{{pluralName}}{{/camelize}} = require('models/{{name}}').{{#camelize}}{{pluralName}}{{/camelize}}
+{{#camelize}}{{name}}{{/camelize}}= require 'models/{{name}}'
 
 describe '{{#camelize}}{{name}}{{/camelize}} Model', ->
   beforeEach ->
-    @model = new {{#camelize}}{{name}}{{/camelize}}()
-    @collection = new {{#camelize}}{{pluralName}}{{/camelize}}()
+    @model= new {{#camelize}}{{name}}{{/camelize}}()
+    @collection= new {{#camelize}}{{name}}{{/camelize}}.Collection()
 
   afterEach ->
     @model.dispose()

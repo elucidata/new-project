@@ -1,5 +1,6 @@
 $('html').removeClass('no-js').addClass('js')
 
+require 'lib/view-helpers'
 window.app= app= require 'app'
 
 app.addInitializer (opts)->

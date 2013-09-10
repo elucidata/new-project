@@ -1,15 +1,19 @@
-Model = require 'framework/model'
-Collection = require 'framework/collection'
+Model= require 'framework/model'
+Collection= require 'framework/collection'
 
 
 class {{#camelize}}{{name}}{{/camelize}} extends Model
+  # Enables automatic updatedOn/createdOn tracking
+  # @trackTimestamps()
+
+  # Define your attribute methods here: (all options are optional)
+  # @attr 'attributeName', default:'Default Value', alias:'attributeName', property:no
 
 
-class {{#camelize}}{{pluralName}}{{/camelize}} extends Collection
+{{#camelize}}{{name}}{{/camelize}}.Collection= class {{#camelize}}{{name}}{{/camelize}}Collection extends Collection
   model: {{#camelize}}{{name}}{{/camelize}}
+  # To sync to localStorage
+  # localStorage: 'app.{{#camelize}}{{pluralName}}{{/camelize}}'
 
 
-module.exports= {
-  {{#camelize}}{{name}}{{/camelize}}  
-  {{#camelize}}{{pluralName}}{{/camelize}}
-} 
+module.exports= {{#camelize}}{{name}}{{/camelize}}

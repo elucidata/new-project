@@ -1,17 +1,14 @@
 Controller= require 'framework/controller'
-LayoutView= require 'views/layout'
-HomeView= require 'views/home'
+LayoutView= require 'views/app-layout'
+HomeView= require 'views/home-page'
 
 module.exports= class UIController extends Controller
 
   appEvents:
-    'show:home': 'showHomeView'
+    'show:home': -> @_updateLayout new HomeView
 
   initialize: ->
     @layout= new LayoutView
-
-  showHomeView: ->
-    @_updateLayout new HomeView
 
   _updateLayout: (view, checkType=no)->
     return if @currentView is view

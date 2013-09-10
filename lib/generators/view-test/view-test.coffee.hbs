@@ -1,8 +1,8 @@
-{{#camelize}}{{name}}{{/camelize}}View = require 'views/{{name}}'
+{{#camelize}}{{name}}{{/camelize}}View= require 'views/{{name}}'
 
 describe '{{#camelize}}{{name}}{{/camelize}}View', ->
   beforeEach ->
-    @view = new {{#camelize}}{{name}}{{/camelize}}View()
+    @view= new {{#camelize}}{{name}}{{/camelize}}View()
 
   it 'should exist', ->
     expect(@view).to.exist

@@ -1,5 +1,7 @@
 
 module.exports= class Controller
+  _.extend @::, Backbone.Events  
+  
   appEvents: null
   
   constructor: (options={})->
@@ -17,7 +19,8 @@ module.exports= class Controller
       @setParent null
       @removeChildren()
 
-  # Pull some methods over from the View impl
+  # Pull some methods over from the View impl 
+  # so Controllers can be nested as well.
   setParent: Giraffe.View::setParent
   addChild: Giraffe.View::addChild
   addChildren: Giraffe.View::addChildren
@@ -25,4 +28,4 @@ module.exports= class Controller
   removeChildren: Giraffe.View::removeChildren
   invoke: Giraffe.View::invoke
 
-_.extend Controller::, Backbone.Events
+

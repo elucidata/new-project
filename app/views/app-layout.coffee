@@ -1,9 +1,9 @@
 View= require 'framework/view'
-AlertHtml= require './templates/alert'
+alertTemplate= require './templates/alert'
 
-module.exports= class LayoutView extends View
+module.exports= class AppLayoutView extends View
 
-  template: require './templates/layout'  
+  template: 'app-layout'  
 
   ui:
     outlet: '#outlet'
@@ -17,7 +17,7 @@ module.exports= class LayoutView extends View
 
   show404Alert: (path)->
     path or= location.hash.substring(1)
-    @alert.html AlertHtml {path}
+    @alert.html alertTemplate {path}
     @alert.show()
 
 

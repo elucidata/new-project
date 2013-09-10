@@ -10,7 +10,7 @@ class Application extends App
 
   routes:
     '': 'show:home'
-  
+
   afterRender: ->
     @uiController= new UIController
     @attach @uiController.layout

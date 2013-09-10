@@ -22,10 +22,10 @@ class Navigator
 
 module.exports= class App extends Giraffe.App
 
-  initialize:->
+  constructor:->
     @navigator= new Navigator this
     patchBackbone()
-    super()
+    super
   
   navigateTo: (params...)-> 
     @navigator.go params...
@@ -38,7 +38,7 @@ module.exports= class App extends Giraffe.App
 
   _logEvent: (args...)-> console.log 'app.event', args
 
-  # If matching is String, matches via .startsWith(), if regexp actually calls string.match(re).
+  # If matching is String, matches via _.startsWith(), if regexp actually calls string.match(re).
   requireAll: (matching)->
     paths= []
     if _.isString matching
@@ -50,7 +50,7 @@ module.exports= class App extends Giraffe.App
     results= {}
     for path in paths
       lib= require(path)
-      if _.isObject lib
+      if _.isPlainObject lib
         _.merge results, lib
       else
         name= _.last path.split('/')
