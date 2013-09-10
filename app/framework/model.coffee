@@ -5,8 +5,9 @@ module.exports= class Model extends Giraffe.Model
     super
     # Timestamp tracking
     if @createdOn? and @updatedOn?
-      @on 'add', @_didAdd
+      # @on 'add', @_didAdd
       @on 'change', @_didChange
+      @_didAdd()
 
   touch: ->
     @_didChange()
@@ -56,5 +57,5 @@ _didChange= ->
 _didAdd= ->
   unless @attributes.createdOn?
     @set 'createdOn', _now(), silent:yes
-    @_didChange()
+    # @_didChange()
   this

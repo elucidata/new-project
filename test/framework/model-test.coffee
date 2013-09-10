@@ -1,6 +1,7 @@
 Model = require 'framework/model'
 
 class User extends Model
+  @trackTimestamps()
   @attr 'username', default:'Bob'
   @attr 'password'
   @attr 'usr', property:yes, default:'Sally'
@@ -84,16 +85,16 @@ describe 'Framework.Model', ->
       @model.usr = 'Dan'
       expect(event_count).to.equal 2
 
+  describe 'Helpers', ->
+    beforeEach ->
+      @model = new User()
+    afterEach ->
+      @model.dispose()
 
-# testUser= new User()
-
-# $ ->
-#   setTimeout (->
-#     simplePerf 'Inline vs Curried Attribute Methods', { times:100000 },
-#       'curried': ->
-#         name= testUser.username()
-#       'inline': ->
-#         name= testUser.username2()
-#   ), 1000
+    it '#touch() should change updatedOn', ->
+      expect(@model.updatedOn()).to.be.undefined
+      @model.touch()
+      expect(@model.updatedOn()).to.exist
+      expect(@model.updatedOn()).to.be.a 'number'
 
 

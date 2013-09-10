@@ -2,7 +2,7 @@ Version = require('models/version')
 
 describe 'Version Model', ->
   beforeEach ->
-    @model = Version
+    @model= Version
 
   it 'should exist', ->
     expect(@model).to.exist
