@@ -46,7 +46,7 @@ module.exports= class App extends Giraffe.App
     else if _.isRegExp matching
       paths.push(module) for module in window.require.list() when module.match(matching)
     else
-      throw "Must specific a String or RegExp to App#requireAll"
+      throw "Must specify a String or RegExp to App#requireAll"
     results= {}
     for path in paths
       lib= require(path)
