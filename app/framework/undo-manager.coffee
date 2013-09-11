@@ -26,7 +26,6 @@ class Transaction
       # If we removed a model, recreate it
       else if method is 'remove'
         restored= new collection.model action.attributes
-        console.log "restored model", restored, collection
         collection.add restored
         restored.save()
       
@@ -42,7 +41,6 @@ class Transaction
   _logEvents: (args...)=>
     action= args.shift()
     if handler= @["_log_#{ action }"]
-      # console.log "logging event", action, args
       @actions.push handler(args...)
 
   _log_add: (model, collection, changes)-> 
@@ -122,7 +120,6 @@ class CrudHelpers
     id= @_getModelId idOrModel
     @app.undoMgr.transaction @collection, =>
       model= @_getModel id
-      console.log "Looking to remove model.id", id, model
       model.destroy()
       callback? model
 
