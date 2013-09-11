@@ -64,16 +64,15 @@ module.exports= class UndoManager extends Controller
     @_stack= []
     @_redoStack= []
     @length= 0
+    @on 'change', => @length= @_stack.length
 
   record: (objects...)->
     block= objects.pop()
     txn= new Transaction this, objects, block
     @_stack.push txn
     txn.execute()
-    @length= @_stack.length
     @_redoStack= []
-    @trigger 'record'
-    @trigger 'change'
+    @trigger 'record change'
     this
 
   undo: ->
@@ -82,9 +81,7 @@ module.exports= class UndoManager extends Controller
     # roll back changes
     txn.rollback()
     @_redoStack.push txn
-    @length= @_stack.length
-    @trigger 'undo'
-    @trigger 'change'
+    @trigger 'undo change'
     this
 
   redo: ->
@@ -93,10 +90,14 @@ module.exports= class UndoManager extends Controller
     # roll back changes
     txn.execute()
     @_stack.push txn
-    @length= @_stack.length
-    @trigger 'redo'
-    @trigger 'change'
+    @trigger 'redo change'
     this
+
+  # NOTE: This will destroy all undo and redo history!
+  clear: ->
+    @_stack.length = 0
+    @_redoStack.length = 0
+    @trigger 'clear change'
 
   canUndo: -> @_stack.length > 0
   canRedo: -> @_redoStack.length > 0
