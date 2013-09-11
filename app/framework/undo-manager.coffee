@@ -1,8 +1,8 @@
 ###
 
-Public: UndoManager tracks changes to specify Collections and/or Models in
+Public: UndoManager tracks changes to specified Collections (and/or Models) in
         a somewhat transactional way. You don't extend your class with this,
-        it doesn't automatically track every model/collection in your app!
+        nor does it automatically track every model/collection in your app!
 
         You are meant to use it with discreet user interactions that the user
         can then undo if they want.
@@ -158,7 +158,7 @@ class Transaction
     #   console.warn "could not record event", action
 
   _log_add: (model, collection, changes)-> 
-    { method:'add', cid: model.cid, id: model.id, attributes: _.clone(model.attributes), model, collection }
+    { method:'add', id: model.id, attributes: _.clone(model.attributes), model, collection }
 
   _log_remove: (model, collection, changes)-> 
     { method:'remove', id: model.id, attributes: _.clone(model.attributes), model, collection }
@@ -177,10 +177,8 @@ class CrudHelpers
 
   doAdd: (data, callback)->
     @app.undoMgr.record @collection, (txn)=>
-      # model= new @modelClass data
       model= @collection.create data
       callback? txn, model
-      # model.save()
 
   doRemove: (idOrModel, callback)->
     id= @_getModelId idOrModel
