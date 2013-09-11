@@ -169,7 +169,36 @@ class Transaction
     { method:'change', id: model.id, attributes: _.clone(newAtts), changes: _.clone(changedAtts), model, collection: model.collection }
 
 
-# Helpers for quickly creating undoable actions for CRUD operations.
+###
+
+Helpers for quickly creating undoable actions for CRUD operations. Best used
+in conjunction with appEvents and your Collection class.
+
+Example: (CoffeeScript)
+  
+  {Model, Collection, UndoManager}= require 'framework'
+
+  class Post extends Model
+    @attr 'title', default:'Untitled'
+
+  class PostCollection extends Collection
+    model: Post
+
+    initialize: ->
+      super
+      @crud= UndoManager.crudHelpers(this)
+
+    appEvents:
+      'add:post': (data)->
+        @crud.doAdd data, (txn, model)->
+          # You can label this action... If you are showing a list
+          # of history items in your app. Completely optional!
+          txn.label "creation of post '#{ model.title() }'"
+
+      'update:post', (idOrModel, data)-> @crud.doUpdate idOrModel, data
+      'remove:post', (idOrModel)-> @crud.doRemove idOrModel
+
+###
 class CrudHelpers
   constructor: (@collection)->
     @app= @collection.app
