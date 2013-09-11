@@ -51,8 +51,9 @@ module.exports= class Model extends Giraffe.Model
 _now= ->
   (new Date).getTime()
 
-_didChange= ->
-  @set 'updatedOn', _now(), silent:yes
+_didChange= (model, changes)->
+  changed= model?.changedAttributes() or {}
+  @set('updatedOn', _now(), silent:yes) unless _.has changed, 'updatedOn'
 
 _didAdd= ->
   unless @attributes.createdOn?

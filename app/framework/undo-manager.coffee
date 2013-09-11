@@ -1,66 +1,54 @@
-Controller= require './controller'
+###
+
+Public: UndoManager tracks changes to specify Collections and/or Models in
+        a somewhat transactional way. You don't extend your class with this,
+        it doesn't automatically track every model/collection in your app!
+
+        You are meant to use it with discreet user interactions that the user
+        can then undo if they want.
+
+
+Example: (CoffeeScript)
+
+  # Assume elsewhere:
+  Users= new UserCollection
+  Users.fetch()
+
+  # Your undoable transaction:
+  @app.undoMgr.record Users ->
+    user= Users.findWhere {id}
+    user.destroy()
+
+  # To rollback the changes made:
+  @app.undoMgr.undo()
+  # or to re-apply them:
+  @app.undoMgr.redo()
+
+  # -- More complex example --
+
+  # Posts and Comments are Collections
+
+  newComment: (postId, commentAtts)->
+    @app.undoMgr.record Posts, Comments, ->
+      post= Posts.findWhere id:postId
+      commentAtts.postId= postId
+      Comments.create commentAtts
+      post.set commentCount:(Comments.find {postId}).length
+      post.save()
+  
+  # @app.undoMgr.undo() will now rollback the changes to both collections. 
+
+###
 
 # TODO: Show persisting undo stack to localStorage
 # TODO: Test complex model updates with undo/redo (multi-model and collection)
 # FIXME: Add proper unit tests
 
-class Transaction
-  constructor: (@manager, @objects, @block)->
-    @actions= []
-
-  execute: ->
-    object.on('all', @_logEvents) for object in @objects
-    @block(@manager)
-    object.off('all', @_logEvents) for object in @objects
-    this
-
-  # REVIEW: Should models be autosaved on rollback?
-  rollback: ->
-    for action in @actions.reverse()
-      {method, model, collection}= action
-      
-      # If we added a model, delete it
-      if method is 'add'
-        model.destroy()
-      
-      # If we removed a model, recreate it
-      else if method is 'remove'
-        restored= new collection.model action.attributes
-        collection.add restored
-        restored.save()
-      
-      # If we modified a model, restore the changes
-      else if method is 'change'
-        model.set action.changes
-        model.save()
-      
-      else
-        console.log 'Unknown model action', method
-    @actions= []
-    this
-
-  _logEvents: (args...)=>
-    action= args.shift()
-    if handler= @["_log_#{ action }"]
-      @actions.push handler(args...)
-
-  _log_add: (model, collection, changes)-> 
-    { method:'add', id: model.id, model, collection }
-
-  _log_remove: (model, collection, changes)-> 
-    { method:'remove', id: model.id, attributes: _.clone(model.attributes), model, collection }
-
-  _log_change: (model, changes)-> 
-    newAtts= model.changedAttributes()
-    changedAtts= _.pick model.previousAttributes(), _.keys(newAtts)
-    { method:'change', id: model.id, attributes: _.clone(newAtts), changes: _.clone(changedAtts), model, collection: model.collection }
-
-
+Controller= require './controller'
 
 module.exports= class UndoManager extends Controller
   
   constructor: ->
-    # TODO: Implement limiting size of undo stack. Currently it will expand forever
     @_stack= []
     @_redoStack= []
     @length= 0
@@ -69,6 +57,7 @@ module.exports= class UndoManager extends Controller
   record: (objects...)->
     block= objects.pop()
     txn= new Transaction this, objects, block
+    # TODO: Implement limiting size of undo stack. Currently it will expand forever
     @_stack.push txn
     txn.execute()
     @_redoStack= []
@@ -105,34 +94,108 @@ module.exports= class UndoManager extends Controller
   @crudHelpers: (collection)->
     new CrudHelpers collection
 
+# Internal class that encapsulates the tracking of all the model/collection
+# changes that occur within the block of a UndoManager#record call.
+class Transaction
+  constructor: (@manager, @objects, @block)->
+    @actions= []
+    @_buildLabel()
+
+  label: (value)->
+    if value?
+      @_label= value
+    else
+      @_label
 
 
+  execute: ->
+    object.on('all', @_logEvents) for object in @objects
+    @block(this, @manager)
+    object.off('all', @_logEvents) for object in @objects
+    this
+
+  # REVIEW: Should models be autosaved on rollback?
+  rollback: ->
+    for action in @actions.reverse()
+      {method, id, collection}= action
+      
+      # If we added a model, delete it
+      if method is 'add'
+        model= collection.get(id) or collection.findWhere(action.attributes)
+        model.destroy()
+      
+      # If we removed a model, recreate it
+      else if method is 'remove'
+        restored= new collection.model action.attributes
+        collection.add restored
+        restored.save()
+      
+      # If we modified a model, restore the changes
+      else if method is 'change'
+        model= collection.get(id) or collection.findWhere(action.attributes)
+        model.set action.changes
+        model.save()
+      
+      else
+        console.log 'Unknown model action', method
+    @actions= []
+    this
+
+  getObjectName: (object)->
+    object.name or object.constructor.name or 'unnamed object'
+
+  _buildLabel: ->
+    names= []
+    for object in @objects
+      names.push @getObjectName(object)
+    @_label = "changes to #{names.join ', '}"
+
+  _logEvents: (args...)=>
+    action= args.shift()
+    if handler= @["_log_#{ action }"]
+      @actions.push handler(args...)
+    # else
+    #   console.warn "could not record event", action
+
+  _log_add: (model, collection, changes)-> 
+    { method:'add', cid: model.cid, id: model.id, attributes: _.clone(model.attributes), model, collection }
+
+  _log_remove: (model, collection, changes)-> 
+    { method:'remove', id: model.id, attributes: _.clone(model.attributes), model, collection }
+
+  _log_change: (model, changes)-> 
+    newAtts= model.changedAttributes()
+    changedAtts= _.pick model.previousAttributes(), _.keys(newAtts)
+    { method:'change', id: model.id, attributes: _.clone(newAtts), changes: _.clone(changedAtts), model, collection: model.collection }
+
+
+# Helpers for quickly creating undoable actions for CRUD operations.
 class CrudHelpers
   constructor: (@collection)->
     @app= @collection.app
     @modelClass= @collection.model
 
   doAdd: (data, callback)->
-    @app.undoMgr.record @collection, =>
-      model= new @modelClass data
-      @collection.add model
-      callback? model
-      model.save()
+    @app.undoMgr.record @collection, (txn)=>
+      # model= new @modelClass data
+      model= @collection.create data
+      callback? txn, model
+      # model.save()
 
   doRemove: (idOrModel, callback)->
     id= @_getModelId idOrModel
-    @app.undoMgr.record @collection, =>
+    @app.undoMgr.record @collection, (txn)=>
       model= @_getModel id
       model.destroy()
-      callback? model
+      callback? txn, model
 
   doUpdate: (idOrModel, data, callback)->
     id= @_getModelId idOrModel
-    @app.undoMgr.record @collection, =>
+    @app.undoMgr.record @collection, (txn)=>
       model=  @_getModel id
       model.set data
-      callback? model
       model.save()
+      callback? txn, model
 
   _getModel: (id)->
     if _.isString id
