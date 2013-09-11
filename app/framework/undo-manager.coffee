@@ -1,6 +1,5 @@
 Controller= require './controller'
 
-# TODO: Implement limiting size of undo stack. Currently will expand forever
 # TODO: Show persisting undo stack to localStorage
 # TODO: Test complex model updates with undo/redo (multi-model and collection)
 # FIXME: Add proper unit tests
@@ -15,6 +14,7 @@ class Transaction
     object.off('all', @_logEvents) for object in @objects
     this
 
+  # REVIEW: Should models be autosaved on rollback?
   rollback: ->
     for action in @actions.reverse()
       {method, model, collection}= action
@@ -32,6 +32,7 @@ class Transaction
       # If we modified a model, restore the changes
       else if method is 'change'
         model.set action.changes
+        model.save()
       
       else
         console.log 'Unknown model action', method
@@ -59,17 +60,19 @@ class Transaction
 module.exports= class UndoManager extends Controller
   
   constructor: ->
+    # TODO: Implement limiting size of undo stack. Currently it will expand forever
     @_stack= []
     @_redoStack= []
     @length= 0
 
-  transaction: (objects...)->
+  record: (objects...)->
     block= objects.pop()
     txn= new Transaction this, objects, block
     @_stack.push txn
     txn.execute()
     @length= @_stack.length
     @_redoStack= []
+    @trigger 'record'
     @trigger 'change'
     this
 
@@ -97,7 +100,6 @@ module.exports= class UndoManager extends Controller
 
   canUndo: -> @_stack.length > 0
   canRedo: -> @_redoStack.length > 0
-  rollback: @::transaction
 
   @crudHelpers: (collection)->
     new CrudHelpers collection
@@ -110,7 +112,7 @@ class CrudHelpers
     @modelClass= @collection.model
 
   doAdd: (data, callback)->
-    @app.undoMgr.transaction @collection, =>
+    @app.undoMgr.record @collection, =>
       model= new @modelClass data
       @collection.add model
       callback? model
@@ -118,14 +120,14 @@ class CrudHelpers
 
   doRemove: (idOrModel, callback)->
     id= @_getModelId idOrModel
-    @app.undoMgr.transaction @collection, =>
+    @app.undoMgr.record @collection, =>
       model= @_getModel id
       model.destroy()
       callback? model
 
   doUpdate: (idOrModel, data, callback)->
     id= @_getModelId idOrModel
-    @app.undoMgr.transaction @collection, =>
+    @app.undoMgr.record @collection, =>
       model=  @_getModel id
       model.set data
       callback? model
@@ -136,6 +138,7 @@ class CrudHelpers
       @collection.get id
     else
       id
+  
   _getModelId: (model)->
     if _.isString model
       model
