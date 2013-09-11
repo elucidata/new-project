@@ -1,3 +1,4 @@
+UndoManager= require './undo-manager'
 
 _patched= no
 
@@ -20,10 +21,12 @@ class Navigator
   matches: (params...)-> @app.router.isCaused params...
   path: (params...)-> @app.router.getRoute params...
 
+
 module.exports= class App extends Giraffe.App
 
   constructor:->
     @navigator= new Navigator this
+    @undoMgr= new UndoManager
     patchBackbone()
     super
   

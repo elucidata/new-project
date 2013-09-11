@@ -1,5 +1,6 @@
 Model= require 'framework/model'
 Collection= require 'framework/collection'
+UndoManager= require 'framework/undo-manager'
 
 
 class {{#camelize}}{{name}}{{/camelize}} extends Model
@@ -14,6 +15,16 @@ class {{#camelize}}{{name}}{{/camelize}} extends Model
   model: {{#camelize}}{{name}}{{/camelize}}
   # To sync to localStorage
   # localStorage: 'app.{{#camelize}}{{pluralName}}{{/camelize}}'
+
+  # If you want undoable appEvent commands, uncomment the following:
+  # initialize: ->
+  #   @crud= UndoManager.crudHelpers this
+  # 
+  # appEvents:
+  #   'add:{{name}}': (data)-> @crud.doAdd data
+  #   'remove:{{name}}': (idOrModel)-> @crud.doRemove idOrModel
+  #   'update:{{name}}': (idOrModel, data)-> @crud.doUpdate idOrModel, data
+
 
 
 module.exports= {{#camelize}}{{name}}{{/camelize}}
