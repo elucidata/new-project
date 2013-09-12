@@ -16,7 +16,7 @@ Example: (CoffeeScript)
 
   # Your undoable transaction:
   @app.undoMgr.record Users ->
-    user= Users.findWhere {id}
+    user= Users.get id
     user.destroy()
 
   # To rollback the changes made:
@@ -30,7 +30,7 @@ Example: (CoffeeScript)
 
   newComment: (postId, commentAtts)->
     @app.undoMgr.record Posts, Comments, ->
-      post= Posts.findWhere id:postId
+      post= Posts.get postId
       commentAtts.postId= postId
       Comments.create commentAtts
       post.set commentCount:(Comments.find {postId}).length
@@ -189,14 +189,13 @@ Example: (CoffeeScript)
       @crud= UndoManager.crudHelpers(this)
 
     appEvents:
-      'add:post': (data)->
-        @crud.doAdd data, (txn, model)->
-          # You can label this action... If you are showing a list
-          # of history items in your app. Completely optional!
-          txn.label "creation of post '#{ model.title() }'"
-
       'update:post', (idOrModel, data)-> @crud.doUpdate idOrModel, data
       'remove:post', (idOrModel)-> @crud.doRemove idOrModel
+      'add:post': (data)->
+        @crud.doAdd data, (txn, model)->
+          # You can label this action if you plan on showing a list
+          # of history items in your app. Completely optional!
+          txn.label "creation of post '#{ model.title() }'"
 
 ###
 class CrudHelpers
