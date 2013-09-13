@@ -175,7 +175,7 @@ describe 'Framework.UndoManager', ->
     expect(@collection.get('01').get('name')).to.equal 'Updated Name'
     expect(@collection.get('02')).to.be.undefined
     expect(Posts.length).to.equal 1
-    expect(Posts.first()).get('name')).to.equal 'New Post'
+    expect(Posts.first().get('name')).to.equal 'New Post'
 
     @undoMgr.undo()
     expect(@collection.length).to.equal 2
@@ -188,4 +188,4 @@ describe 'Framework.UndoManager', ->
     expect(@collection.get('01').get('name')).to.equal 'Updated Name'
     expect(@collection.get('02')).to.be.undefined
     expect(Posts.length).to.equal 1
-    expect(Posts.first()).get('name')).to.equal 'New Post'
+    expect(Posts.first().get('name')).to.equal 'New Post'
