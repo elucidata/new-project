@@ -40,10 +40,6 @@ Example: (CoffeeScript)
 
 ###
 
-# TODO: Show persisting undo stack to localStorage
-# TODO: Test complex model updates with undo/redo (multi-model and collection)
-# FIXME: Add proper unit tests
-
 Controller= require './controller'
 
 module.exports= class UndoManager extends Controller
@@ -53,6 +49,7 @@ module.exports= class UndoManager extends Controller
     @_redoStack= []
     @length= 0
     @on 'change', => @length= @_stack.length
+    super
 
   record: (objects...)->
     block= objects.pop()
@@ -90,6 +87,10 @@ module.exports= class UndoManager extends Controller
 
   canUndo: -> @_stack.length > 0
   canRedo: -> @_redoStack.length > 0
+
+  dispose: ->
+    @clear()
+    super
 
   @crudHelpers: (collection)->
     new CrudHelpers collection

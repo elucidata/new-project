@@ -10,7 +10,7 @@ module.exports= class Controller
     @children ?= []
     @parent ?= null
     @initialize?(options)
-    @app.addChild this unless @parent?
+    @app?.addChild this unless @parent?
     Giraffe.bindEventMap @, @app, @appEvents
     Giraffe.View::_bindDataEvents.call this
     
