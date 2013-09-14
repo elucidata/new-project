@@ -12,16 +12,16 @@ Example: (CoffeeScript)
 
   # Assume elsewhere:
   Users= new UserCollection
-  Users.fetch()
 
   # Your undoable transaction:
-  @app.undoMgr.record Users ->
+  @app.undoMgr.record Users, ->
     user= Users.get id
     user.destroy()
 
-  # To rollback the changes made:
+  # To undo the changes made:
   @app.undoMgr.undo()
-  # or to re-apply them:
+  
+  # To redo them:
   @app.undoMgr.redo()
 
   # -- More complex example --
@@ -159,15 +159,15 @@ class Transaction
     #   console.warn "could not record event", action
 
   _log_add: (model, collection, changes)-> 
-    { method:'add', id: model.id, attributes: _.clone(model.attributes), model, collection }
+    { method:'add', id: model.id, attributes: _.clone(model.attributes), collection }
 
   _log_remove: (model, collection, changes)-> 
-    { method:'remove', id: model.id, attributes: _.clone(model.attributes), model, collection }
+    { method:'remove', id: model.id, attributes: _.clone(model.attributes), collection }
 
   _log_change: (model, changes)-> 
     newAtts= model.changedAttributes()
     changedAtts= _.pick model.previousAttributes(), _.keys(newAtts)
-    { method:'change', id: model.id, attributes: _.clone(newAtts), changes: _.clone(changedAtts), model, collection: model.collection }
+    { method:'change', id: model.id, attributes: _.clone(newAtts), changes: _.clone(changedAtts), collection: model.collection }
 
 
 ###

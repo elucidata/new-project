@@ -29,12 +29,13 @@ Instance methods:
 ### `Model`
 
 The `Model` class extends `Giraffe.Model`, adding support for automatically
-tracking `createdOn`/`updatedOn` timestamps.
+tracking `createdOn`/`updatedOn` timestamps. Adds static method for defining attribute
+methods or properties for the Model -- so you aren't always passing around fragile strings.
 
 Static methods:
 
 - `trackTimestamps()` -- Enables automatic updating of `createdOn` and `updatedOn` timestamps.
-- `attr(name, options={})` -- Creates attributes methods (like jquery) or property getters/setters for specified attribute. Options supported:
+- `attr(name, options={})` -- Creates attribute methods (like jquery) or property getters/setters for specified attribute. Options supported:
     - `alias` -- String. Make the method/property name on the model object different than the attribute name.
     - `default` -- Object/Any, default null. Default value for attribute.
     - `property` -- Boolean, default false. If true, creates getters/setters, otherwise creates attribute methods.
