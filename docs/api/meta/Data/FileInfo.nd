@@ -1,0 +1,17 @@
+1.52
+CoffeeScript
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/model.coffee	1385447009	1	Model
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/collection-view.coffee	1385446741	1	CollectionView
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/app.coffee	1385446680	1	App
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/lib/view-helpers.coffee	1385439096	0	/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/lib/view-helpers.coffee
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/app.coffee	1385447929	1	Application
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/undo-manager.coffee	1385447607	1	UndoManager
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/views/home-page.coffee	1385439096	0	/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/views/home-page.coffee
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/index.coffee	1385439096	0	/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/index.coffee
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/controller.coffee	1385446865	1	Controller
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/views/app-layout.coffee	1385439096	0	/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/views/app-layout.coffee
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/view.coffee	1385447544	1	View
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/controllers/main.coffee	1385446657	0	/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/controllers/main.coffee
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/init.coffee	1385445988	0	/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/init.coffee
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/framework/collection.coffee	1385446766	1	Collection
+/Users/darthapo/Projects/OpenSource/elucidata-new-project/app/models/version.coffee	1385447733	1	Version

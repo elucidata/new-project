@@ -1,15 +1,24 @@
 Giraffe.View.setTemplateStrategy 'jst'
 
+###
+
+  Class: View
+
+  Extends Giraffe.View
+
+###
 module.exports= class View extends Giraffe.View
 
   constructor: ->
     @template= require("views/templates/#{ @template }") if _.isString @template
     super
 
-  # Public: Adds a class that MUST contain a CSS transtion and will automatically 
-  #         remove it on transitionEnd event.
+  # Method: animate
+  #
+  # Adds a class that MUST contain a CSS transtion and will automatically 
+  # remove it on transitionEnd event.
   # 
-  # className     - The String className to apply to this.el.
+  # className     - The String className to apply to _this.el_ (required)
   # complete      - Callback function to call when animation is done. (default: ->)
   # safetyTimeout - Number of milliseconds to wait before forcing the end of an 
   #                 animation and calling the callback. Use as fallback for browsers
@@ -33,9 +42,11 @@ module.exports= class View extends Giraffe.View
       else
         callback?(e)
 
-  # NOTE: View#isVisible() relies on HTMLElement#getBoundingClientRect()!
-  # TODO: Need a test harness to put View#isHidden() through it's paces.
+  # Method: isVisible
+  # Relies on HTMLElement#getBoundingClientRect() to determine if the this.el is visible.
   isVisible: ->
+    # NOTE: View#isVisible() relies on HTMLElement#getBoundingClientRect()!
+    # TODO: Need a test harness to put View#isHidden() through it's paces.
     return no unless @el?
     this_rect= @el.getBoundingClientRect()
     return no if this_rect.width is 0 and this_rect.height is 0
@@ -43,4 +54,6 @@ module.exports= class View extends Giraffe.View
     # @log.debug this_rect.top, parent_rect.
     this_rect.top <= parent_rect.bottom and this_rect.bottom >= parent_rect.top
 
+  # Method: isHidden
+  # Inverse of <View.isVisible>
   isHidden: -> !@isVisible()

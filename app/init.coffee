@@ -1,3 +1,5 @@
+# Module: init
+# You put any application initialization code here
 $('html').removeClass('no-js').addClass('js')
 
 require 'lib/view-helpers'

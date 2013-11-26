@@ -31,6 +31,9 @@
         "dist/backbone.giraffe.js",
         "dist/backbone.giraffe.contrib.js"
       ]
+    },
+    "underscore.string": {
+      "main": "dist/underscore.string.min.js"
     }
   }
 }

@@ -119,6 +119,7 @@ generating Models/Views/Controllers, and displaying source annotations:
     cake build:watch          # Watch ./app and autobuild to ./public on change
     cake build:server         # Starts dev server
     cake clean                # Removes ./public
+    cake docs                 # Build API docs
     cake gen                  # Runs scaffold generator
     cake gen:ls               # List known generators
     cake notes                # Show all annotations in source

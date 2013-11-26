@@ -1,4 +1,22 @@
+###
+  Class: Model
 
+  Extends <Giraffe.Model>
+
+  Usage:
+
+  (start code)
+  class MyModel extends Model
+    @attr 'name'
+
+
+  m= new MyModel name:'Matt'
+
+  m.get('name') is m.name()
+  #=> true
+  (end)
+
+###
 module.exports= class Model extends Giraffe.Model
 
   constructor: ->
@@ -9,27 +27,35 @@ module.exports= class Model extends Giraffe.Model
       @on 'change', @_didChange
       @_didAdd()
 
+  # Method: touch
+  # Updates `updatedOn` field
   touch: ->
     @_didChange()
 
+  # Method: trackTimestamps
+  # Static method to enable timestamp tracking. Also generates attr methods for _createdOn_ and _updatedOn_.
   @trackTimestamps= ->
     @attr 'createdOn', readonly:yes
     @attr 'updatedOn', readonly:yes
     @::_didChange= _didChange
     @::_didAdd= _didAdd
 
-  # Public: Generates attribute methods or property accessors.
-  # 
-  # name    - The String name of the Model attribute to wrap.
-  # options - The hash Object of options... (default: {})
-  #           alias:    The String to use for the accessor. (default: name)
-  #           default:  The default value for this attribute.
-  #           property: Boolean flag (default: false)
-  #                     true  - Use property accessors.
-  #                     false - User attribute method.
-  #           readonly: Boolean flag (default: false)
-  #                     true  - Only reads are supported.
-  #                     false - Reads and writes are allowed.
+  ###
+    Method: attr
+
+    Static method that generates attribute methods or property accessors.
+    
+    name    - The String name of the Model attribute to wrap.
+    options - The hash Object of options... (default: {})
+              alias:    The String to use for the accessor. (default: name)
+              default:  The default value for this attribute.
+              property: Boolean flag (default: false)
+                        true: Use property accessors.
+                        false: User attribute method.
+              readonly: Boolean flag (default: false)
+                        true: Only reads are supported.
+                        false: Reads and writes are allowed.
+  ###
   @attr: (name, options={}) ->
     method_name= options.alias or name
     if options.default? 

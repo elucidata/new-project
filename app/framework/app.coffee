@@ -21,7 +21,8 @@ class Navigator
   matches: (params...)-> @app.router.isCaused params...
   path: (params...)-> @app.router.getRoute params...
 
-
+# Class: App
+# Extends <Giraffe.App>
 module.exports= class App extends Giraffe.App
 
   constructor:->
@@ -30,9 +31,14 @@ module.exports= class App extends Giraffe.App
     patchBackbone()
     super
   
+  # Method: navigateTo
   navigateTo: (params...)-> 
     @navigator.go params...
 
+  # Method: logEvents
+  # Log all app events
+  #
+  # stop - Boolean. Defaults to false.
   logEvents: (stop)->
     if stop
       @off 'all', @_logEvent
@@ -41,6 +47,7 @@ module.exports= class App extends Giraffe.App
 
   _logEvent: (args...)-> console.log 'app.event', args
 
+  # Method: requireAll
   # If matching is String, matches via _.startsWith(), if regexp actually calls string.match(re).
   requireAll: (matching)->
     paths= []

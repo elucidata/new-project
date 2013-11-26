@@ -1,9 +1,24 @@
 View= require './view'
+###
 
+  Class: CollectionView
+  
+  Extends Giraffe.Contrib.CollectionView and includes additions from <View>
+
+###
 module.exports= class CollectionView extends Giraffe.Contrib.CollectionView
+  
+  # Method: animate
+  # See <View.animate>
   animate: View::animate
   _removeAnimatedClass: View::_removeAnimatedClass
+  
+  # Method: isVisible
+  # See <View.isVisible>
   isVisible: View::isVisible
+  
+  # Method: isHidden
+  # See <View.isHidden>
   isHidden: View::isHidden
 
   afterRender: ->
